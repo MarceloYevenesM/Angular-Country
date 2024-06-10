@@ -5,21 +5,27 @@ import { AboutPageComponent } from './shared/pages/about-page/about-page.compone
 import { ContactPageComponent } from './shared/pages/contact-page/contact-page.component';
 
 const routes: Routes = [
-  {
-    path: 'home',
+  /* {
+    path: '',
     component: HomePageComponent
-  },
+  }, */
   { /* ruta y componente */
     path: 'about',
     component: AboutPageComponent
   },
-  { /* Cualquier ruta va llegar a esta */
+  {
     path: 'contact',
     component: ContactPageComponent
   },
+  {
+    path: 'countries',
+    /* Esto resuelve una promesa */
+    /* El path + el modulo que quiero cargar que es un hijo */
+    loadChildren: () => import('./countries/countries.module').then(m => m.CountriesModule)
+  },
   { /* Cualquier ruta va llegar a esta */
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'countries'
   },
 ];
 
