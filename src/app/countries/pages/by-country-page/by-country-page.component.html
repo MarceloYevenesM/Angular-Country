@@ -1,1 +1,17 @@
-<p>by-country-page works!</p>
+<h2>Por Pais</h2>
+<hr>
+
+<div class="row">
+  <div class="col">
+    <!-- SearchBox -->
+    <!-- Cuando el componente emita (onValue) yo lo voy a escuchar y hacer algo que es searchCapital -->
+    <shared-search-box placeholder = "Buscar por pais" (onValue)="searchByCountry($event)"></shared-search-box>
+    <hr>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <countries-table [countries]="countries"></countries-table>
+  </div>
+</div>
