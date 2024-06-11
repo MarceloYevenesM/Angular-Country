@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CountriesService } from '../../services/countries.service';
 
 @Component({
   selector: 'app-by-country-page',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styles: ``
 })
 export class ByCountryPageComponent {
+
+
+
+  searchByCapital( term: string):void {
+
+  }
 
 }
