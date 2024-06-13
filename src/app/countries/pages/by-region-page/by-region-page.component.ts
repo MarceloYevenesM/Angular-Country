@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Country } from '../../interfaces/country';
 import { CountriesService } from '../../services/countries.service';
+import { Region } from '../../interfaces/region.type';
 
-/* Uso types cuando se que no va extenderse */
-type Region = 'Africa'| 'Americas'| 'Asia'| 'Europe'| 'Oceania';
+
+
 
 
 @Component({
