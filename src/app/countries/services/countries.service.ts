@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, delay, map, of } from 'rxjs';
 import { Country } from '../interfaces/country';
 
 @Injectable({ providedIn: 'root' })
@@ -11,10 +11,20 @@ export class CountriesService {
 
   constructor(private http: HttpClient) { }
 
+  private getCountriesRequest(url: string, params: HttpParams): Observable<Country[]> {
+    return this.http.get<Country[]>(url, { params })
+      .pipe(
+        /* Detectar o capturar el error y el of me permite construir otro observable */
+        catchError(error => of([])), //Capturo y devuelvo un nuevo observable que es un arreglo vacio
+        delay(1000), //Delay de 1 segundo
+      );
+  }
 
   searchCountryByAlphaCode(code: string): Observable<Country | null> {
     const params = new HttpParams()
       .set('apikey', this.apiKey);
+
+
     return this.http.get<Country[]>(`${this.apiUrl}/code/${code}`, { params })
       .pipe(
         /* se usa map por la api regresa un arreglo siempre */
@@ -28,31 +38,24 @@ export class CountriesService {
   searchByCapital(term: string): Observable<Country[]> {
     const params = new HttpParams()
       .set('apikey', this.apiKey);
-    return this.http.get<Country[]>(`${this.apiUrl}/capital/${term}`, { params })
-      .pipe(
-        /* Detectar o capturar el error y el of me permite construir otro observable */
-        catchError(error => of([])) //Capturo y devuelvo un nuevo observable que es un arreglo vacio
-      );
+    const url = `${this.apiUrl}/capital/${term}`;
+    return this.getCountriesRequest(url, params);
   }
+
 
   searchCountry(term: string) {
     const params = new HttpParams()
       .set('apikey', this.apiKey);
-    return this.http.get<Country[]>(`${this.apiUrl}/name/${term}`, { params })
-      .pipe(
-        /* Detectar o capturar el error y el of me permite construir otro observable */
-        catchError(error => of([])) //Capturo y devuelvo un nuevo observable que es un arreglo vacio
-      );
+    const url = `${this.apiUrl}/name/${term}`;
+    return this.getCountriesRequest(url, params);
   }
+
 
   searchRegion(region: string) {
     const params = new HttpParams()
       .set('apikey', this.apiKey);
-    return this.http.get<Country[]>(`${this.apiUrl}/region/${region}`, { params })
-      .pipe(
-        /* Detectar o capturar el error y el of me permite construir otro observable */
-        catchError(error => of([])) //Capturo y devuelvo un nuevo observable que es un arreglo vacio
-      );
+    const url = `${this.apiUrl}/region/${region}`;
+    return this.getCountriesRequest(url, params);
   }
 
 
