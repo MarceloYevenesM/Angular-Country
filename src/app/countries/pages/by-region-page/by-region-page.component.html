@@ -5,11 +5,8 @@
   <div class="col text-center">
     <!-- SearchBox -->
     <!-- Cuando el componente emita (onValue) yo lo voy a escuchar y hacer algo que es searchCapital -->
-    <button class="btn mx-2"
-      *ngFor="let region of regions"
-      (click)="searchByRegion(region)"
-      [ngClass]="{ 'btn-outline-primary' : selectedRegion === region }"
-    >
+    <button class="btn mx-2" *ngFor="let region of regions" (click)="searchByRegion(region)"
+      [ngClass]="{ 'btn-outline-primary' : selectedRegion === region }">
       {{region}}
     </button>
     <hr>
