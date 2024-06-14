@@ -5,7 +5,8 @@
   <div class="col">
     <!-- SearchBox -->
     <!-- Cuando el componente emita (onValue) yo lo voy a escuchar y hacer algo que es searchCapital -->
-    <shared-search-box placeholder = "Buscar por pais" (onDebounce)="searchByCountry($event)"></shared-search-box>
+    <shared-search-box placeholder="Buscar por pais" (onDebounce)="searchByCountry($event)"
+      [initalValue]="initialValue"></shared-search-box>
     <hr>
   </div>
 </div>

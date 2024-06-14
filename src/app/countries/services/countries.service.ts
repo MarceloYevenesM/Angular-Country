@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, catchError, delay, map, of, tap } from 'rxjs';
 import { Country } from '../interfaces/country';
 import { CacheStore } from '../interfaces/cache-store.interfaces';
+import { Region } from '../interfaces/region.type';
 
 @Injectable({ providedIn: 'root' })
 export class CountriesService {
@@ -50,7 +51,7 @@ export class CountriesService {
       .pipe( /* Disparar operadores de jsx  */
         /* Efecto secundario */
         tap(countries => this.cacheStore.byCapital = { term, countries })
-      )
+      );
   }
 
 
@@ -58,15 +59,22 @@ export class CountriesService {
     const params = new HttpParams()
       .set('apikey', this.apiKey);
     const url = `${this.apiUrl}/name/${term}`;
-    return this.getCountriesRequest(url, params);
+    return this.getCountriesRequest(url, params)
+      .pipe( /* Disparar operadores de jsx  */
+        /* Efecto secundario */
+        tap(countries => this.cacheStore.byCountries = { term, countries })
+      );
   }
 
 
-  searchRegion(region: string) {
+  searchRegion(region: Region) {
     const params = new HttpParams()
       .set('apikey', this.apiKey);
     const url = `${this.apiUrl}/region/${region}`;
-    return this.getCountriesRequest(url, params);
+    return this.getCountriesRequest(url, params).pipe( /* Disparar operadores de jsx  */
+      /* Efecto secundario */
+      tap(countries => this.cacheStore.byRegion = { region, countries })
+    );
   }
 
 
