@@ -12,11 +12,12 @@ import { Region } from '../../interfaces/region.type';
   templateUrl: './by-region-page.component.html',
   styles: ``
 })
-export class ByRegionPageComponent implements OnInit{
+export class ByRegionPageComponent implements OnInit {
 
   public countries: Country[] = [];
   public regions: Region[] = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
   public selectedRegion?: Region;
+  public isLoading: boolean = false;
 
   constructor(private countriesService: CountriesService) {
 
@@ -27,19 +28,16 @@ export class ByRegionPageComponent implements OnInit{
   }
 
   searchByRegion(region: Region): void {
-
+    this.isLoading = true
     this.selectedRegion = region;
     /* Si no me suscribo nunca se emite */
     this.countriesService.searchRegion(region).subscribe(
       countries => {
         this.countries = countries;
+        this.isLoading = false;
       }
     );
-
-
   }
-
-
 }
 
 

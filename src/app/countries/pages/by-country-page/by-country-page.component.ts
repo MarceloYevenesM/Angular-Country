@@ -7,23 +7,25 @@ import { Country } from '../../interfaces/country';
   templateUrl: './by-country-page.component.html',
   styles: ``
 })
-export class ByCountryPageComponent implements OnInit{
+export class ByCountryPageComponent implements OnInit {
 
   public countries: Country[] = [];
   public initialValue: string = '';
+  public isLoading: boolean = false;
 
-  constructor(private countriesService: CountriesService) {}
+  constructor(private countriesService: CountriesService) { }
   ngOnInit(): void {
     this.countries = this.countriesService.cacheStore.byCountries.countries;
     this.initialValue = this.countriesService.cacheStore.byCountries.term;
   }
 
   searchByCountry(term: string): void {
-
+    this.isLoading = true
     /* Si no me suscribo nunca se emite */
     this.countriesService.searchCountry(term).subscribe(
       countries => {
         this.countries = countries;
+        this.isLoading = false;
       }
     );
 

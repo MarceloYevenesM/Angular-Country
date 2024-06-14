@@ -11,12 +11,23 @@ export class CountriesService {
   private apiUrl: string = 'https://api.apilayer.com/geo/country';
   private apiKey: string = '38gLG1W5HBHoxavaPQfGpMb7XVnO0n2T'
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.loadFromLocalStorage(); //Como no es un componente de angular lo puedo ejecutar aca
+  }
 
   public cacheStore: CacheStore = {
     byCapital: { term: '', countries: [] },
     byCountries: { term: '', countries: [] },
     byRegion: { region: '', countries: [] },
+  }
+
+  private saveToLocalStorage() {
+    localStorage.setItem('cacheStore', JSON.stringify(this.cacheStore));
+  }
+
+  private loadFromLocalStorage() {
+    if (!localStorage.getItem('cacheStore')) return;
+    this.cacheStore = JSON.parse(localStorage.getItem('cacheStore')!);
   }
 
   private getCountriesRequest(url: string, params: HttpParams): Observable<Country[]> {
@@ -50,7 +61,8 @@ export class CountriesService {
     return this.getCountriesRequest(url, params)
       .pipe( /* Disparar operadores de jsx  */
         /* Efecto secundario */
-        tap(countries => this.cacheStore.byCapital = { term, countries })
+        tap(countries => this.cacheStore.byCapital = { term, countries }),
+        tap(() => this.saveToLocalStorage())
       );
   }
 
@@ -62,7 +74,8 @@ export class CountriesService {
     return this.getCountriesRequest(url, params)
       .pipe( /* Disparar operadores de jsx  */
         /* Efecto secundario */
-        tap(countries => this.cacheStore.byCountries = { term, countries })
+        tap(countries => this.cacheStore.byCountries = { term, countries }),
+        tap(() => this.saveToLocalStorage())
       );
   }
 
@@ -73,7 +86,8 @@ export class CountriesService {
     const url = `${this.apiUrl}/region/${region}`;
     return this.getCountriesRequest(url, params).pipe( /* Disparar operadores de jsx  */
       /* Efecto secundario */
-      tap(countries => this.cacheStore.byRegion = { region, countries })
+      tap(countries => this.cacheStore.byRegion = { region, countries }),
+      tap(() => this.saveToLocalStorage())
     );
   }
 
